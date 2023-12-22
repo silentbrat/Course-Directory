@@ -1,5 +1,6 @@
 package com.educationsite.CourseDirectory.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,6 +36,21 @@ public class CourseService {
 			CourseDTO dto=new CourseDTO();
 			BeanUtils.copyProperties(obj.get(), dto);
 			return new ResponseEntity<>(dto,HttpStatus.OK);
+		} 
+		return new ResponseEntity<>("Such Course does not exist.",HttpStatus.OK);
+	}
+	
+	public ResponseEntity<Object> getByIds(List<Long> ids){
+		List<Course> list= repository.getByIds(ids);
+		if(!list.isEmpty()) {
+			List<CourseDTO> dtoList=new ArrayList<>();
+			for(Course course:list) {
+				CourseDTO dto=new CourseDTO();
+				BeanUtils.copyProperties(course, dto);
+				dtoList.add(dto);
+			}
+			
+			return new ResponseEntity<>(dtoList,HttpStatus.OK);
 		} 
 		return new ResponseEntity<>("Such Course does not exist.",HttpStatus.OK);
 	}
